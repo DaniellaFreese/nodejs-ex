@@ -2,8 +2,8 @@ const https = require('https');
 const fs = require('fs');
 
 const options = {
-  key: fs.readFileSync('test/fixtures/keys/agent2-key.pem'),
-  cert: fs.readFileSync('test/fixtures/keys/agent2-cert.pem')
+  key: fs.readFileSync('/var/run/secrets/openshift.io/app-certs/tls.key'),
+  cert: fs.readFileSync('/var/run/secrets/openshift.io/app-certs/tls.crt')
 };
 
 https.createServer(options, (req, res) => {
