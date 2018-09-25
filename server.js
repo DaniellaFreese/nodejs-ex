@@ -1,28 +1,15 @@
-var fs = require('fs');
-var express = require('express');
-var https = require('https');
-var key = fs.readFileSync('hacksparrow-key.pem');
-var cert = fs.readFileSync('hacksparrow-cert.pem');
-var https_options = {
-    key: key,
-    cert: cert
-};
-var PORT = 8000;
-var HOST = 'localhost';
-app = express();
+    var fs = require('fs'),
+    https = require('https'),
+    express = require('express'),
+    app = express();
 
-app.configure(function(){
-    app.use(app.router);
-});
+    https.createServer({
+      key: fs.readFileSync('/var/run/secrets/openshift.io/app-certs/tls.key'),
+      cert: fs.readFileSync('/var/run/secrets/openshift.io/app-certs/tls.crt')
+    }, app).listen(55555);
 
-server = https.createServer(https_options, app).listen(PORT, HOST);
-console.log('HTTPS Server listening on %s:%s', HOST, PORT);
+    app.get('/', function (req, res) {
+      res.header('Content-type', 'text/html');
+      return res.end('<h1>Hello, Secure World!</h1>');
+    });
 
-
-// routes
-app.get('/hey', function(req, res) {
-    res.send('HEY!');
-});
-app.post('/ho', function(req, res) {
-    res.send('HO!');
-});
