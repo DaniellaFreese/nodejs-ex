@@ -1,12 +1,28 @@
-const https = require('https');
-const fs = require('fs');
-
-const options = {
-  key: fs.readFileSync('/var/run/secrets/openshift.io/app-certs/tls.key'),
-  cert: fs.readFileSync('/var/run/secrets/openshift.io/app-certs/tls.crt')
+var fs = require('fs');
+var express = require('express');
+var https = require('https');
+var key = fs.readFileSync('/var/run/secrets/openshift.io/app-certs/tls.key');
+var cert = fs.readFileSync('/var/run/secrets/openshift.io/app-certs/tls.crt')
+var https_options = {
+    key: key,
+    cert: cert
 };
+var PORT = 8000;
+var HOST = 'localhost';
+app = express();
 
-https.createServer(options, (req, res) => {
-  res.writeHead(200);
-  res.end('hello world\n');
-}).listen(8000);
+app.configure(function(){
+    app.use(app.router);
+});
+
+server = https.createServer(https_options, app).listen(PORT, HOST);
+console.log('HTTPS Server listening on %s:%s', HOST, PORT);
+
+
+// routes
+app.get('/hey', function(req, res) {
+    res.send('HEY!');
+});
+app.post('/ho', function(req, res) {
+    res.send('HO!');
+});
