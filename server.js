@@ -1,8 +1,8 @@
 var fs = require('fs');
 var express = require('express');
 var https = require('https');
-var key = fs.readFileSync('/var/run/secrets/openshift.io/app-certs/tls.key');
-var cert = fs.readFileSync('/var/run/secrets/openshift.io/app-certs/tls.crt')
+var key = fs.readFileSync('hacksparrow-key.pem');
+var cert = fs.readFileSync('hacksparrow-cert.pem');
 var https_options = {
     key: key,
     cert: cert
